@@ -79,5 +79,6 @@ export class Game{
                 payload:move
             }))
         }
+        this.moveCount++;
     }
 }

@@ -21,7 +21,8 @@ export class Game{
             type:INIT_GAME,
             payload:{
                 color : "white"
-            }
+            },
+            currentTurn:"white"
 
         }))
 
@@ -29,7 +30,8 @@ export class Game{
             type:INIT_GAME,
             payload:{
                 color:"black"
-            }
+            },
+            currentTurn:"white"
         }))
 
     }
@@ -38,19 +40,22 @@ export class Game{
          from: string,
          to: string   
     }){
+        console.log("inside the make move function ,",move)
         if(this.moveCount%2 === 0 && socket!=this.player1){
             return;
         }
         if(this.moveCount%2 === 1 && socket!==this.player2){
             return ;
         }
-
+        console.log("not early return")
         try {
+            console.log("Trying to move")
             this.board.move(move)
         } catch (error) {
+            console.log("Error while moving the piece")
             return;
         }
-
+        console.log("Move is made")
         if(this.board.isGameOver()){
             this.player1.send(JSON.stringify({
                 type:GAME_OVER,
@@ -71,12 +76,24 @@ export class Game{
         if(this.moveCount%2 ===0 ){
             this.player2.send(JSON.stringify({
                 type:MOVE,
-                payload:move
+                payload:move,
+                currentTurn:"black"
             }))
-        }else{
             this.player1.send(JSON.stringify({
                 type:MOVE,
-                payload:move
+                payload:move,
+                currentTurn:"black"
+            }))
+        }else{
+            this.player2.send(JSON.stringify({
+                type:MOVE,
+                payload:move,
+                currentTurn:"white"
+            }))
+            this.player1.send(JSON.stringify({
+                type:MOVE,
+                payload:move,
+                currentTurn:"white"
             }))
         }
         this.moveCount++;

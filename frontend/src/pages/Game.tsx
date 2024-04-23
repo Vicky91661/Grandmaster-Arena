@@ -7,18 +7,32 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 
 import chess from "../assets/chess.png"
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import {useState } from "react";
+import { useSocket } from "../hooks/useSocket";
+
+
+
+const MOVE = "move";
+const INIT_GAME= "init_game";
+const GAME_OVER = "game_over";
 
 function Game() {
+    const socket = useSocket();
 
     const [flipTimer,setFlipTimer] = useState(false)
     const [timer,setTimer] = useState(10)
 
     const naviagte = useNavigate()
 
+    
+
     const handleTimer = (time:number)=>{
         setTimer(time)
         setFlipTimer(!flipTimer)
+    }
+
+    const naviagtePlay = ()=>{
+        naviagte("/play")
     }
 
   return (
@@ -75,7 +89,7 @@ function Game() {
             </div>}
             <div className="flex">
                 <button className="bg-[#81B64C] rounded-lg w-full py-4 text-3xl font-bold tracking-wide"
-                onClick={()=>naviagte("/play")}>Play</button>
+                onClick={naviagtePlay}>Play</button>
             </div>
            
             <div className="flex items-center bg-[#1E1E1B] gap-4 p-4 rounded-lg cursor-pointer">

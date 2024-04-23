@@ -31,11 +31,12 @@ export class gameManager {
                     const game = new Game(this.pendingPlayer,socket);
                     this.games.push(game);
                     this.pendingPlayer = null;
-                }else{  
+                }else{
                     this.pendingPlayer = socket;
                 }
             }else if(message.type === MOVE){
-                const game = this.games.find((game)=>game.player1===socket || game.player2===socket)    
+                const game = this.games.find((game)=>game.player1===socket || game.player2===socket) 
+                console.log("move is made with ,",message.move)   
                 if(game){
                     game.makeMove(socket,message.move)
                 }
